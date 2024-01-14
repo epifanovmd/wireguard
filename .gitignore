@@ -1,0 +1,5 @@
+.idea
+/config
+/wg0.conf
+/wg0.json
+.DS_Store
