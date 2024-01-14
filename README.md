@@ -1,6 +1,6 @@
 # WireGuard
 
-# Установка docker and docker-compose
+### Установка docker and docker-compose
 
 ```
 sudo apt update
@@ -14,11 +14,13 @@ sudo systemctl status docker
 sudo apt-get install docker-compose
 ```
 
-# На стороне клинета
+# Настройка сервера
+
+### На стороне клинета
 
 ssh-copy-id root@<remote_host>
 
-# На стороне сервера
+### На стороне сервера
 
 sudo nano /etc/ssh/sshd_config
 
@@ -32,7 +34,7 @@ sudo nano /etc/ssh/sshd_config
 sudo systemctl reload ssh
 
 
-## Options
+# Options
 
 These options can be configured by setting environment variables using `-e KEY="VALUE"` in the `docker run` command.
 
@@ -56,3 +58,7 @@ These options can be configured by setting environment variables using `-e KEY="
 
 > If you change `WG_PORT`, make sure to also change the exposed port.
 
+
+# Запуск WireGuard
+
+> docker-compose -f docker-compose.yml up --build --force-recreate -d
