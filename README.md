@@ -1,50 +1,36 @@
 # WireGuard
 
-You have found the easiest way to install & manage WireGuard on any Linux host!
+# Установка docker and docker-compose
 
-## Installation
-
-### 1. Install Docker
-
-If you haven't installed Docker yet, install it by running:
-
-```bash
-$ curl -sSL https://get.docker.com | sh
-$ sudo usermod -aG docker $(whoami)
-$ exit
+```
+sudo apt update
+sudo apt install curl software-properties-common ca-certificates apt-transport-https -y
+curl -f -s -S -L https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu jammy stable"
+sudo apt update
+apt-cache policy docker-ce
+sudo apt install docker-ce -y
+sudo systemctl status docker
+sudo apt-get install docker-compose
 ```
 
-### 2. Run WireGuard Easy
+# На стороне клинета
 
-To automatically install & run wg-easy, simply run:
+ssh-copy-id root@<remote_host>
 
-<pre>
-$ docker run -d \
-  --name=wg-easy \
-  -e WG_HOST=<b>🚨YOUR_SERVER_IP</b> \
-  -e PASSWORD=<b>🚨YOUR_ADMIN_PASSWORD</b> \
-  -v ~/.wg-easy:/etc/wireguard \
-  -p 51820:51820/udp \
-  -p 51821:51821/tcp \
-  --cap-add=NET_ADMIN \
-  --cap-add=SYS_MODULE \
-  --sysctl="net.ipv4.conf.all.src_valid_mark=1" \
-  --sysctl="net.ipv4.ip_forward=1" \
-  --restart unless-stopped \
-  ghcr.io/wg-easy/wg-easy
-</pre>
+# На стороне сервера
 
-> 💡 Replace `YOUR_SERVER_IP` with your WAN IP, or a Dynamic DNS hostname.
->
-> 💡 Replace `YOUR_ADMIN_PASSWORD` with a password to log in on the Web UI.
+sudo nano /etc/ssh/sshd_config
 
-The Web UI will now be available on `http://0.0.0.0:51821`.
+```
++- PasswordAuthentication yes --> no
 
-> 💡 Your configuration files will be saved in `~/.wg-easy`
+++ PubkeyAuthentication yes
+++ ChallengeResponseAuthentication no
 
-### 3. Sponsor
+```
+sudo systemctl reload ssh
 
-Are you enjoying this project? [Buy Emile a beer!](https://github.com/sponsors/WeeJeWel) 🍻
 
 ## Options
 
@@ -70,4 +56,3 @@ These options can be configured by setting environment variables using `-e KEY="
 
 > If you change `WG_PORT`, make sure to also change the exposed port.
 
-And then run the `docker run -d \ ...` command above again.
